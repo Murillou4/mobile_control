@@ -26,10 +26,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
-  Win32Window::Size size(1280, 720);
-  if (!window.Create(L"mobile_control", origin, size)) {
+  Win32Window::Size size(400, 200);
+  if (!window.Create(L"Mobile Control", origin, size)) {
     return EXIT_FAILURE;
   }
+    // Impede o redimensionamento da janela.
+  HWND hwnd = window.GetHandle();
+  LONG style = GetWindowLong(hwnd, GWL_STYLE);
+  style &= ~(WS_THICKFRAME | WS_MAXIMIZEBOX);  // Remove as opções de redimensionamento.
+  SetWindowLong(hwnd, GWL_STYLE, style);
+
   window.SetQuitOnClose(true);
 
   ::MSG msg;

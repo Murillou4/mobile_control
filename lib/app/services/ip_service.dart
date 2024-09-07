@@ -4,16 +4,20 @@ class IpService {
   Future<String> getLocalIP() async {
     try {
       final interfaces = await NetworkInterface.list();
-      for (var interface in interfaces) {
-        for (var addr in interface.addresses) {
-          if (addr.type == InternetAddressType.IPv4 && !addr.isLoopback) {
-            return addr.address;
-          }
-        }
-      }
+
+      List<InternetAddress> addresses = interfaces
+          .where((interface) => interface.addresses
+              .any((address) => address.type == InternetAddressType.IPv4))
+          .map((interface) => interface.addresses.firstWhere(
+              (address) => address.type == InternetAddressType.IPv4))
+          .toList();
+      String ethernetIp = addresses
+          .where((address) => address.address.contains('192.168.'))
+          .first
+          .address;
+      return ethernetIp;
     } catch (e) {
-      rethrow;
+      return 'IP indisponiível';
     }
-    return 'Unknown IP';
   }
 }
