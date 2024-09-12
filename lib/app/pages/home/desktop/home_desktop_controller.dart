@@ -60,7 +60,7 @@ class HomeDesktopController {
 
       // Mover o mouse com base em dx e dy
       await FlutterAutoGUI.moveToRel(
-        offset: Size(dx * 6, dy * 6),
+        offset: Size(dx * 4, dy * 4),
         duration: const Duration(milliseconds: 50),
         curve: Curves.linear,
       );
